@@ -1,0 +1,41 @@
+<div class="cat-facts-container">
+  @if (isAuthenticated$ | async) {
+    <header>
+      <h1>Cat Facts</h1>
+      <button class="logout-btn" (click)="logout()">Logout</button>
+    </header>
+
+    <div class="facts-list">
+      @if (loading() && facts().length === 0) {
+        <div class="loading">
+          Loading cat facts...
+        </div>
+      }
+
+      @if (error()) {
+        <div class="error">
+          {{ error() }}
+        </div>
+      }
+
+      @for (fact of facts(); track trackByFact($index, fact)) {
+        <div class="fact-card">
+          <p>{{ fact }}</p>
+        </div>
+      } @empty {
+        <div class="no-facts">No cat facts available. Try refreshing.</div>
+      }
+
+      @if (loading() && facts().length > 0) {
+        <div class="loading-more">
+          Loading more facts...
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="unauthorized">
+      <h2>Please log in to view cat facts</h2>
+      <button (click)="_router.navigate(['/login'])">Go to Login</button>
+    </div>
+  }
+</div>
